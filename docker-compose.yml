@@ -1,0 +1,28 @@
+db:
+    image: mariadb:latest
+    ports:
+        - "3306:3306"
+    environment:
+        - "MYSQL_ROOT_PASSWORD=root"
+        - "MYSQL_USER=yprox"
+        - "MYSQL_PASSWORD=yprox"
+        - "MYSQL_DATABASE=yprox"
+php:
+    build: ./docker/php/
+    volumes:
+        - ".:/home/docker:rw"
+        - "./docker/php/php.ini:/usr/local/etc/php/php.ini:ro"
+    ports:
+        - "2222:22"
+    links:
+        - "db:db"
+    working_dir: "/home/docker"
+front:
+    image: nginx
+    ports:
+        - "80:80"
+    links:
+        - "php:php"
+    volumes:
+        - ".:/home/docker:ro"
+        - "./docker/front/default.conf:/etc/nginx/conf.d/default.conf:ro"
