@@ -12,8 +12,6 @@ php:
     volumes:
         - ".:/home/docker:rw"
         - "./docker/php/php.ini:/usr/local/etc/php/php.ini:ro"
-    ports:
-        - "2222:22"
     links:
         - "db:db"
     working_dir: "/home/docker"
@@ -24,5 +22,10 @@ front:
     links:
         - "php:php"
     volumes:
-        - ".:/home/docker:ro"
+        - ".:/home/docker:rw"
         - "./docker/front/default.conf:/etc/nginx/conf.d/default.conf:ro"
+js:
+    image: node:4-onbuild
+    volumes:
+        - ".:/home/docker:rw"
+    working_dir: "/home/docker"
